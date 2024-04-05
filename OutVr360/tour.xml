@@ -1,0 +1,707 @@
+﻿<krpano version="1.21" title="Virtual Tour">
+
+	<include url="skin/vtourskin.xml" />
+
+	<!-- customize skin settings: maps, gyro, webvr, thumbnails, tooltips, layout, design, ... -->
+	<skin_settings maps="true"
+	               maps_type="google"
+	               maps_bing_api_key=""
+	               maps_google_api_key=""
+	               maps_zoombuttons="false"
+	               maps_loadonfirstuse="true"
+	               gyro="true"
+	               gyro_keeplookingdirection="false"
+	               webvr="true"
+	               webvr_keeplookingdirection="true"
+	               webvr_prev_next_hotspots="true"
+	               autotour="false"
+	               littleplanetintro="false"
+	               followmousecontrol="false"
+	               title="false"
+	               thumbs="true"
+	               thumbs_width="120" thumbs_height="80" thumbs_padding="10" thumbs_crop="0|40|240|160"
+	               thumbs_opened="false"
+	               thumbs_text="false"
+	               thumbs_dragging="true"
+	               thumbs_onhoverscrolling="false"
+	               thumbs_scrollbuttons="false"
+	               thumbs_scrollindicator="false"
+	               thumbs_loop="false"
+	               tooltips_buttons="false"
+	               tooltips_thumbs="false"
+	               tooltips_hotspots="false"
+	               tooltips_mapspots="false"
+	               deeplinking="false"
+	               loadscene_flags="MERGE"
+	               loadscene_blend="OPENBLEND(0.5, 0.0, 0.75, 0.05, linear)"
+	               loadscene_blend_prev="SLIDEBLEND(0.5, 180, 0.75, linear)"
+	               loadscene_blend_next="SLIDEBLEND(0.5,   0, 0.75, linear)"
+	               loadingtext=""
+	               layout_width="100%"
+	               layout_maxwidth="814"
+	               controlbar_width="-24"
+	               controlbar_height="0"
+	               controlbar_offset="20"
+	               controlbar_offset_closed="-40"
+	               controlbar_overlap.no-fractionalscaling="0"
+	               controlbar_overlap.fractionalscaling="0"
+	               design_skin_images=""
+	               design_bgcolor="0x2D3E50"
+	               design_bgalpha="0.8"
+	               design_bgborder="0"
+	               design_bgroundedge="1"
+	               design_bgshadow="0 4 10 0x000000 0.3"
+	               design_thumbborder_bgborder="3 0xFFFFFF 1.0"
+	               design_thumbborder_padding="2"
+	               design_thumbborder_bgroundedge="0"
+	               design_text_css="color:#FFFFFF; font-family:Arial;"
+	               design_text_shadow="1"
+	               />
+
+	<!--
+	    For an alternative skin design either change the <skin_settings> values 
+	    from above or optionally include one of the predefined designs from below.
+	-->
+	<!-- <include url="skin/vtourskin_design_flat_light.xml"  /> -->
+	<!-- <include url="skin/vtourskin_design_glass.xml"       /> -->
+	<!-- <include url="skin/vtourskin_design_ultra_light.xml" /> -->
+	<!-- <include url="skin/vtourskin_design_117.xml"         /> -->
+	<!-- <include url="skin/vtourskin_design_117round.xml"    /> -->
+	<!-- <include url="skin/vtourskin_design_black.xml"       /> -->
+
+	<action name="starting_md">
+		<!-- set(layer[title-scene].html, get(xml.scene)); -->
+		set(test, get(xml.scene));
+
+		set(layer[sound-btn-pause].visible, false);
+		set(layer[sound-btn-play].visible, false);
+
+		if(test == 'scene_chuakhanhlam_2-1', 
+			set(layer[sound-btn-play].visible, false);
+			set(layer[sound-btn-pause].visible, true);
+			playsound(sound, '/sounds/gioithieu_1.mp3');
+		);
+		if(test == 'scene_chuakhanhlam_2-2', 
+			set(layer[sound-btn-play].visible, false);
+			set(layer[sound-btn-pause].visible, true);
+			playsound(sound, '/sounds/gioithieu_2.mp3');
+		);
+		if(test == 'starting', 
+			stopallsounds();
+		);
+	</action>
+
+	<action name="callactiontest">
+		showlog();
+		
+		if(device.mobile, trace(1), set(layer[logo].url, 'panos/images/start.jpg'));
+	</action>
+
+	<events 
+		onnewscene="starting_md"
+	/>
+
+	<layer 
+		name="sound-btn-play"
+		type="image"
+		url="panos/images/play.png"
+		align="bottomright"
+		keep="true"
+		tx="32"
+		ty="32"
+		width="64"
+		height="64"
+		onclick="resumesound(sound);set(visible, false); set(layer[sound-btn-pause].visible, true)"
+	/>
+
+	<layer 
+		name="sound-btn-pause"
+		type="image"
+		url="panos/images/Nt6v.gif"
+		align="bottomright"
+		keep="true"
+		tx="32"
+		ty="32"
+		width="64"
+		height="64"
+		framewidth="660"
+		frameheight="409"
+		frames="51"
+		onloaded="do_crop_animation()"
+		onclick="pausesound(sound);set(visible, false); set(layer[sound-btn-play].visible, true)"
+	/>
+	
+
+	<scene name="starting" title="" onstart="callactiontest" heading="0.0">
+		
+		<!-- <control bouncinglimits="calc:image.cube ? true : false"/>
+
+		<view limitview="range" />
+
+		<preview url="panos/images/start.jpg" />
+
+		<image type="FLAT">
+			<level tiledimagewidth="100%" tiledimageheight="100%"> <flat  /> </level>
+		</image> -->
+
+		<layer 
+			tiledimagewidth="100%" 
+			tiledimageheight="100%"
+			name="logo"
+			type="image"
+			url="panos/images/start.jpg"
+			width="100%"
+			height="100%"
+		/>
+
+		<layer 
+			type="text"
+			bg="false"
+			css="color: #fff; font-weight: bold;font-size: 16px;"
+			name="logo_slo"
+			align="topleft"
+			y="105"
+			x="114"
+			wordwrap="true"
+			html="[info][b]Autotimelapse[/b][/info]"
+		/>
+
+		<layer 
+			type="text"
+			bg="false"
+			css="color: #fff; font-weight: bold;font-size: 14px;"
+			name="title_start"
+			align="topleft"
+			y="220"
+			x="80"
+			wordwrap="true"
+			html="[info][h1]BẢN ĐỒ SỐ[/h1] [h1]DU LỊCH MỘT TRẠM[/h1] [h1]THỊ TRẤN MĂNG ĐEN TỈNH KON TUM[/h1][/info]"
+		/>
+
+		<layer 
+			type="text"
+			bg="false"
+			css="color: #fff;font-size: 16px;line-height: 1.4"
+			name="title_qr"
+			align="topleft"
+			y="420"
+			x="80"
+			width="232"
+			wordwrap="true"
+			html="[info][p][b]Quét QR[/b] code để trải nghiệm hành trình tại thị trấn Măng Đen[/p][/info]"
+		/>
+
+		<layer 
+			name="qrcode"
+			type="image"
+			url="panos/images/qrcode.png"
+			width="220"
+			height="220"
+			align="topleft"
+			x="80"
+			y="496"
+		/>
+
+		<layer 
+			name="preview"
+			visible="true"
+			type="text"
+			keep="false"
+			width="646"
+			height="488"
+			bg="true"
+			bgcolor="0xFFFFFF"
+			align="right"
+			x="80"
+			padding="2"
+		>
+			<layer 
+				usercontrol="off"
+				name="preview_item"
+				type="image"
+				url="panos/images/preview.jpg"
+				width="630"
+				height="472"
+				align="center"
+			>
+				<layer 
+					type="text"
+					bg="true"
+					bgcolor="0xFFFFFF"
+					padding="8 14"
+					bgroundedge="6"
+					css="color: #000; font-weight: bold;font-size: 14px;opacity: 0.65"
+					name="start_btn"
+					align="bottomcenter"
+					y="32"
+					wordwrap="true"
+					html="[info][b]Bắt đầu tham quan[/b][/info]"
+					onover="set(css, color: #000; font-weight: bold;font-size: 14px;opacity: 1)"
+					onout="set(css, color: #000; font-weight: bold;font-size: 14px;opacity: 0.65)"
+					onclick="loadscene(scene_ChuaKhanhLam_2-1)"
+				/>
+			</layer>
+		</layer>
+	</scene>
+
+	
+	
+	<scene name="scene_ChuaKhanhLam_2-1" title="ChuaKhanhLam_2-1" onstart="" thumburl="panos/ChuaKhanhLam_2-1.tiles/thumb.jpg" lat="14.58725278" lng="108.26977306" alt="1208.70" heading="0.0">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/ChuaKhanhLam_2-1.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/ChuaKhanhLam_2-1.tiles/%s/l%l/%0v/l%l_%s_%0v_%0h.jpg" multires="512,1024,1792,3712,7424" />
+		</image>
+		<cssstyles>
+			.test {
+				position: relative;
+				background-color: rgba(255, 255, 255, 0.75);
+				color: #000;
+				font-weight: 500;
+				border-radius: 4px;
+			}
+
+			.test::after {
+				display: block;
+				position: absolute;
+				content: "";
+				left: 50%;
+				top: -25%;
+				margin-left: -8px;
+				margin-top: 0;
+				width: 0;
+				height: 0;
+				border-left: 8px solid transparent;
+				border-right: 8px solid transparent;
+				border-bottom: 8px solid rgba(255, 255, 255, 0.75);
+			}
+
+			.oktest {
+				background-color: #fff;
+				display: flex;
+				flex-direction: column;
+				color: #000;
+				justify-content: center;
+				align-items: center;
+				border-radius: 4px;
+			}
+
+			p {
+				margin: 0;
+				padding: 6px 0;
+			}
+
+			.oktest::after {
+				display: block;
+				position: absolute;
+				content: "";
+				left: 50%;
+				top: -4%;
+				margin-left: -8px;
+				margin-top: 0;
+				width: 0;
+				height: 0;
+				border-left: 8px solid transparent;
+				border-right: 8px solid transparent;
+				border-bottom: 8px solid #fff;
+			}
+
+			.test3 {
+				position: relative;
+				background-color: rgba(255, 255, 255, 0.75);
+				color: #000;
+				padding: 4px;
+				border-radius: 4px;
+				opacity: 0.5;
+			}
+		</cssstyles>
+
+		<style 
+			name="basic"
+			bgalpha="1"
+			distorted="false"
+			zoom="false"
+			handcursor="false"
+		/>
+
+		<hotspot 
+			name="move_1"
+			type="image"
+			url="panos/images/ddd.png"
+			keep="false"
+			ath="-10"
+			atv="10"
+			width="90"
+			height="56"
+			distorted="false"
+			onclick="loadscene(scene_ChuaKhanhLam_2-2)"
+		>
+		</hotspot>
+
+		<layer 
+			parent="hotspot[move_1]"
+			html="[div][info]Địa điểm 1 - Chùa Khánh Lâm[/info][arrow][/arrow][/div]"
+			style="basic"
+			cssclass="test3"
+			padding="6 8"
+			type="text"
+			height="auto"
+			wordwrap="true"
+			visible="true"
+			edge="bottom"
+			y="56"
+			align="bottom"
+			renderer="css3d"
+			zorder="100"
+		/>
+
+		<hotspot 
+			name="move_2"
+			type="image"
+			url="panos/images/icon_logo.jpg"
+			keep="false"
+			ath="-32"
+			atv="14"
+			width="48"
+			height="48"
+			bgroundedge="24"
+			onclick="loadscene(scene_ChuaKhanhLam_2-2)"
+		/>
+
+		<layer 
+			parent="hotspot[move_2]"
+			html="[div][info]Địa điểm 2 - Chùa Khánh Lâm[/info][arrow][/arrow][/div]"
+			style="basic"
+			cssclass="test"
+			type="text"
+			padding="6 8"
+			height="auto"
+			wordwrap="true"
+			visible="true"
+			edge="bottom"
+			y="-42"
+			align="bottom"
+			renderer="css3d"
+			zorder="100"
+		/>
+
+		<hotspot 
+			name="move_3"
+			type="image"
+			url="panos/images/icon_logo.jpg"
+			keep="false"
+			ath="-48"
+			atv="18"
+			width="48"
+			height="48"
+			bgroundedge="24"
+			onclick="loadscene(scene_ChuaKhanhLam_2-2)"
+		/>
+
+		<layer 
+			parent="hotspot[move_3]"
+			html="[div][info][p]Chùa Khánh Lâm - Cafe[/p][/info][img width='100%' height='120px' src='panos/images/qrcode.png' /][arrow][/arrow][/div]"
+			style="basic"
+			cssclass="oktest"
+			padding="6"
+			type="text"
+			height="auto"
+			wordwrap="true"
+			visible="true"
+			edge="bottom"
+			y="-182"
+			align="bottom"
+			renderer="css3d"
+			zorder="100"
+		/>
+
+		<hotspot 
+			name="move_4"
+			type="image"
+			url="panos/images/sticker_cute_3.png"
+			keep="false"
+			ath="48"
+			atv="64"
+			framewidth="320"
+			frameheight="300"
+			frames="12"
+			width="48"
+			height="48"
+			onloaded="do_crop_animation()"
+			onclick="loadscene(scene_ChuaKhanhLam_2-2)"
+		/>
+
+		<layer 
+			parent="hotspot[move_4]"
+			html="[div][info]Địa điểm 4 - Chùa Khánh Lâm[/info][arrow][/arrow][/div]"
+			style="basic"
+			cssclass="test"
+			type="text"
+			height="auto"
+			wordwrap="true"
+			visible="true"
+			edge="bottom"
+			y="-32"
+			align="bottom"
+			renderer="css3d"
+			zorder="100"
+		/>
+
+		<hotspot 
+			name="move_5"
+			type="image"
+			url="panos/images/sticker_cute_3.png"
+			keep="false"
+			ath="-180"
+			atv="45"
+			framewidth="320"
+			frameheight="300"
+			frames="12"
+			width="48"
+			height="48"
+			onloaded="do_crop_animation()"
+			onclick="loadscene(scene_ChuaKhanhLam_2-2)"
+		/>
+
+		<layer 
+			parent="hotspot[move_5]"
+			html="[div][info]Địa điểm 5 - Chùa Khánh Lâm[/info][arrow][/arrow][/div]"
+			style="basic"
+			cssclass="test"
+			type="text"
+			height="auto"
+			wordwrap="true"
+			visible="true"
+			edge="bottom"
+			y="-32"
+			align="bottom"
+			renderer="css3d"
+			zorder="100"
+		/>
+
+	</scene>
+
+	<scene name="scene_ChuaKhanhLam_2-2" title="ChuaKhanhLam_2-2" onstart="" thumburl="panos/ChuaKhanhLam_2-2.tiles/thumb.jpg" lat="14.58725917" lng="108.26977417" alt="1214.50" heading="0.0">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/ChuaKhanhLam_2-2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/ChuaKhanhLam_2-2.tiles/%s/l%l/%0v/l%l_%s_%0v_%0h.jpg" multires="512,1024,1792,3712,7424" />
+		</image>
+
+		<cssstyles>
+			.test {
+				position: relative;
+				background-color: #fff;
+				color: #000;
+			}
+
+			.test img {
+				position: relative;
+			}
+
+			.test::after {
+				display: block;
+				position: absolute;
+				content: "";
+				left: 50%;
+				top: -30%;
+				margin-left: -8px;
+				margin-top: 0;
+				width: 0;
+				height: 0;
+				border-left: 8px solid transparent;
+				border-right: 8px solid transparent;
+				border-bottom: 8px solid #fff;
+			}
+		</cssstyles>
+
+		<style 
+			name="basic"
+			bgalpha="1"
+			distorted="false"
+			zoom="false"
+			handcursor="false"
+		/>
+
+		<hotspot 
+			name="move_1"
+			type="image"
+			url="panos/images/sticker_cute_3.png"
+			keep="false"
+			ath="-10"
+			atv="10"
+			framewidth="320"
+			frameheight="300"
+			frames="12"
+			width="48"
+			height="48"
+			distorted="false"
+			onloaded="do_crop_animation()"
+			onclick="loadscene(scene_ChuaKhanhLam_2-2)"
+		>
+		</hotspot>
+
+		<layer 
+			parent="hotspot[move_1]"
+			html="[div][img style='display: inline-block !important;' width='86px' height='86px' src='panos/images/qrcode.png' /][/div]"
+			style="basic"
+			cssclass="test"
+			type="text"
+			height="auto"
+			wordwrap="true"
+			visible="true"
+			edge="bottom"
+			y="-118"
+			align="bottom"
+			renderer="css3d"
+			zorder="100"
+		/>
+
+		<hotspot 
+			name="move_2"
+			type="image"
+			url="panos/images/sticker_cute_3.png"
+			keep="false"
+			ath="-32"
+			atv="14"
+			framewidth="320"
+			frameheight="300"
+			frames="12"
+			width="48"
+			height="48"
+			onloaded="do_crop_animation()"
+			onclick="loadscene(scene_ChuaKhanhLam_2-2)"
+		/>
+
+		<layer 
+			parent="hotspot[move_2]"
+			html="[div][info]Địa điểm 5 - Chùa Khánh Lâm[/info][arrow][/arrow][/div]"
+			style="basic"
+			cssclass="test"
+			type="text"
+			height="auto"
+			wordwrap="true"
+			visible="true"
+			edge="bottom"
+			y="-32"
+			align="bottom"
+			renderer="css3d"
+			zorder="100"
+		/>
+
+		<hotspot 
+			name="move_3"
+			type="image"
+			url="panos/images/sticker_cute_3.png"
+			keep="false"
+			ath="-48"
+			atv="18"
+			framewidth="320"
+			frameheight="300"
+			frames="12"
+			width="48"
+			height="48"
+			onloaded="do_crop_animation()"
+			onclick="loadscene(scene_ChuaKhanhLam_2-2)"
+		/>
+
+		<layer 
+			parent="hotspot[move_3]"
+			html="[div][info]Địa điểm 6 - Chùa Khánh Lâm[/info][arrow][/arrow][/div]"
+			style="basic"
+			cssclass="test"
+			type="text"
+			height="auto"
+			wordwrap="true"
+			visible="true"
+			edge="bottom"
+			y="-32"
+			align="bottom"
+			renderer="css3d"
+			zorder="100"
+		/>
+
+	</scene>
+
+	<scene name="scene_ChuaKhanhLam_3-2" title="ChuaKhanhLam_3-2" onstart="" thumburl="panos/ChuaKhanhLam_3-2.tiles/thumb.jpg" lat="14.58737417" lng="108.26932028" alt="1212.55" heading="0.0">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/ChuaKhanhLam_3-2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/ChuaKhanhLam_3-2.tiles/%s/l%l/%0v/l%l_%s_%0v_%0h.jpg" multires="512,1024,1792,3712,7424" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_ChuaKhanhLam_4-1" title="ChuaKhanhLam_4-1" onstart="" thumburl="panos/ChuaKhanhLam_4-1.tiles/thumb.jpg" lat="14.58743500" lng="108.26903861" alt="1218.00" heading="0.0">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/ChuaKhanhLam_4-1.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/ChuaKhanhLam_4-1.tiles/%s/l%l/%0v/l%l_%s_%0v_%0h.jpg" multires="512,1024,1792,3712,7424" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_ChuaKhanhLam_4-2" title="ChuaKhanhLam_4-2" onstart="" thumburl="panos/ChuaKhanhLam_4-2.tiles/thumb.jpg" lat="14.58742306" lng="108.26907694" alt="1234.39" heading="0.0">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/ChuaKhanhLam_4-2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/ChuaKhanhLam_4-2.tiles/%s/l%l/%0v/l%l_%s_%0v_%0h.jpg" multires="512,1024,1792,3712,7424" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_ChuaKhanhLam_5-1" title="ChuaKhanhLam_5-1" onstart="" thumburl="panos/ChuaKhanhLam_5-1.tiles/thumb.jpg" lat="14.58785528" lng="108.26837722" alt="1208.20" heading="0.0">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/ChuaKhanhLam_5-1.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/ChuaKhanhLam_5-1.tiles/%s/l%l/%0v/l%l_%s_%0v_%0h.jpg" multires="512,1024,1792,3712,7424" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_ChuaKhanhLam_5-2" title="ChuaKhanhLam_5-2" onstart="" thumburl="panos/ChuaKhanhLam_5-2.tiles/thumb.jpg" lat="14.58782833" lng="108.26841806" alt="1212.90" heading="0.0">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/ChuaKhanhLam_5-2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/ChuaKhanhLam_5-2.tiles/%s/l%l/%0v/l%l_%s_%0v_%0h.jpg" multires="512,1024,1792,3712,7424" />
+		</image>
+
+	</scene>
+
+
+</krpano>
